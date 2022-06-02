@@ -3,7 +3,7 @@ import db from "../config/database.js";
 
 // Get All Products
 export const getProducts = (result) => {
-  db.query("SELECT * FROM gel", (err, results) => {
+  db.query("SELECT idGel,DateGel AS date, estVide AS isEmpty, NbreDosesDistrib AS distributedDoses, NbreDosesNnDistrib AS notDistributedDoses FROM GEL", (err, results) => {
     if (err) {
       console.log(err);
       result(err, null);
@@ -15,7 +15,7 @@ export const getProducts = (result) => {
 
 export const getLastGelsUpdate = (result) => {
   db.query(
-    "SELECT idGel, MAX(date) AS date, isEmpty,distributedDoses,notDistributedDoses FROM gel GROUP BY idGel",
+    "SELECT idGel, MAX(DateGel) AS date, estVide AS isEmpty,NbreDosesDistrib AS distributedDoses,NbreDosesNnDistrib AS notDistributedDoses FROM GEL GROUP BY idGel",
     (err, results) => {
       if (err) {
         console.log(err);
@@ -30,7 +30,7 @@ export const getLastGelsUpdate = (result) => {
 export const getGelById = (idGel,result) => {
   console.log(idGel);
   db.query(
-    "SELECT * FROM gel WHERE idGel =?",
+    "SELECT idGel, DateGel AS date, estVide AS isEmpty,NbreDosesDistrib AS distributedDoses,NbreDosesNnDistrib AS notDistributedDoses FROM GEL WHERE idGel =?",
     [idGel],
     (err, results) => {
       if (err) {
@@ -44,7 +44,7 @@ export const getGelById = (idGel,result) => {
 
 export const getGelByMonth = (month,result) => {
   db.query(
-    "SELECT * FROM gel WHERE date LIKE ?",
+    "SELECT idGel, DateGel AS date, estVide AS isEmpty,NbreDosesDistrib AS distributedDoses,NbreDosesNnDistrib AS notDistributedDoses FROM GEL WHERE DateGel LIKE ?",
     [month+'%'],
   // db.query(
   //   "SELECT * FROM gel WHERE idGel =?",
@@ -62,7 +62,7 @@ export const getGelByMonth = (month,result) => {
 export const getGelByIdAndMonth = (idGel,month,result) => {
   if (idGel && month) {
   db.query(
-    "SELECT * FROM gel WHERE idGel=? AND date LIKE ?",
+    "SELECT idGel, DateGel AS date, estVide AS isEmpty,NbreDosesDistrib AS distributedDoses,NbreDosesNnDistrib AS notDistributedDoses FROM GEL WHERE idGel=? AND DateGel LIKE ?",
     [idGel,month+'%'],
     (err, results) => {
       if (err) {
@@ -76,7 +76,7 @@ export const getGelByIdAndMonth = (idGel,month,result) => {
 };
 
 export const getGelNumber = (result) => {
-  db.query("SELECT MAX(idGel) AS total FROM gel", (err, results) => {
+  db.query("SELECT MAX(idGel) AS total FROM GEL", (err, results) => {
     if (err) {
       console.log(err);
       result(err, null);
